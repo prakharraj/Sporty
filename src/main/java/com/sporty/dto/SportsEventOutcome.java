@@ -1,10 +1,10 @@
 package com.sporty.dto;
 
-import lombok.Data;
+import lombok.Builder;
 
-@Data
-public class SportsEventOutcome {
-    private Long eventId;
-    private String eventName;
-    private Long eventWinnerId;
+@Builder
+public record SportsEventOutcome(
+        Long eventId,
+        String eventName,
+        Long eventWinnerId) {
 }

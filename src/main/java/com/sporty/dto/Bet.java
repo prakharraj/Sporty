@@ -16,15 +16,11 @@ import java.math.BigDecimal;
 @Builder
 @ToString
 public class Bet {
-
     @Id
     private Long betId;
-
     private Long userId;
     private Long eventId;
     private Long eventMarketId;
     private Long eventWinnerId;
-
     private BigDecimal betAmount;
-
 }

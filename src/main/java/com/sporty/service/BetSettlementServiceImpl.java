@@ -21,15 +21,15 @@ public class BetSettlementServiceImpl implements BetSettlementService {
 
     @Override
     public List<Bet> settleBet(SportsEventOutcome outcome) {
-        List<Bet> bets = betRepository.findByEventId(outcome.getEventId());
+        List<Bet> bets = betRepository.findByEventId(outcome.eventId());
 
         if (CollectionUtils.isNotEmpty(bets)) {
-            log.info("Got {} matching bets for event: {} - {}",  bets.size(), outcome.getEventId(), outcome.getEventName());
-            log.info("Sending bets to rocketMQ: {}", bets);
+            log.info("Got {} matching bets for event: {} - {}",  bets.size(), outcome.eventId(), outcome.eventName());
+            log.info("Sending bets to rocketMQ for settlement : {}", bets);
             //rocketMQProducerService.sendEventOutcome(bets); TODO : rocketMQ setup
         }
         else{
-            log.info("No matching bets found for event: {} - {}", outcome.getEventId(), outcome.getEventName());
+            log.warn("No matching bets found for event: {} - {}", outcome.eventId(), outcome.eventName());
         }
         return bets;
     }

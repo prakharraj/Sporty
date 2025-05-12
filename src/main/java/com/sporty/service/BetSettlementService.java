@@ -6,5 +6,5 @@ import com.sporty.dto.SportsEventOutcome;
 import java.util.List;
 
 public interface BetSettlementService {
-    public List<Bet> settleBet(SportsEventOutcome outcome);
+    List<Bet> settleBet(SportsEventOutcome outcome);
 }

@@ -21,7 +21,7 @@ public class SportsEventOutcomeConsumer {
 
     @KafkaListener(topics = "event-outcomes", groupId = "sporty-group", containerFactory = "kafkaListenerContainerFactory")
     public void consume(SportsEventOutcome outcome) {
-        log.info("Received event outcome: {} - {}", outcome.getEventId(), outcome.getEventName());
+        log.info("Received event outcome: {} - {}", outcome.eventId(), outcome.eventName());
         List<Bet> bets = betSettlementService.settleBet(outcome);
         log.info("Settled bets: {}", bets);
     }

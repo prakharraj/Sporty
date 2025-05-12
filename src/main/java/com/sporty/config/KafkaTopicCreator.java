@@ -7,11 +7,13 @@ import org.apache.kafka.clients.admin.NewTopic;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Profile;
 
 import java.util.Collections;
 import java.util.Properties;
 
 @Configuration
+@Profile("!prod")
 @Log4j2
 public class KafkaTopicCreator {
 
@@ -25,13 +27,11 @@ public class KafkaTopicCreator {
 
             try (AdminClient admin = AdminClient.create(config)) {
                 NewTopic topic = new NewTopic(TOPIC_NAME, 1, (short) 1);
-
                 // Create topic if not exists
                 admin.createTopics(Collections.singleton(topic)).all().get();
-
-                log.info("✅ Kafka topic created: {}" , TOPIC_NAME);
+                log.info("Kafka topic created: {}" , TOPIC_NAME);
             } catch (Exception e) {
-                System.err.println("⚠️ Failed to create Kafka topic: " + e.getMessage());
+                System.err.println("Failed to create Kafka topic: " + e.getMessage());
             }
         };
     }

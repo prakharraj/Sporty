@@ -13,7 +13,7 @@ public class SportsEventController {
 
     private static final String TOPIC = "event-outcomes";
 
-    private final KafkaTemplate<Long, SportsEventOutcome> kafkaTemplate;
+    private final KafkaTemplate<String, SportsEventOutcome> kafkaTemplate;
 
     @PostMapping("/outcome")
     public String publishEventOutcome(@RequestBody SportsEventOutcome outcome) {
