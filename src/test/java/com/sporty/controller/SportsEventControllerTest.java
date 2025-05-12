@@ -8,7 +8,13 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.http.ResponseEntity;
 import org.springframework.kafka.core.KafkaTemplate;
+
+import java.util.Map;
+import java.util.Objects;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.Future;
 
 import static org.mockito.Mockito.*;
 
@@ -21,6 +27,12 @@ class SportsEventControllerTest {
     @InjectMocks
     SportsEventController sportsEventController;
 
+    @BeforeEach
+    void setUp() throws Exception {
+        var topicField = SportsEventController.class.getDeclaredField("topic");
+        topicField.setAccessible(true);
+        topicField.set(sportsEventController, "test-topic");
+    }
 
     @Test
     void testPublishEventOutcome() {
@@ -28,10 +40,11 @@ class SportsEventControllerTest {
                 .eventId(1L)
                 .eventName("Event Name")
                 .build();
-        when(kafkaTemplate.send(anyString(), eq(outcome))).thenReturn(null);
-        String response = sportsEventController.publishEventOutcome(outcome);
+        when(kafkaTemplate.send(anyString(), eq(outcome))).thenReturn(CompletableFuture.completedFuture(null));
+        ResponseEntity<?> response = sportsEventController.publishEventOutcome(outcome);
 
-        verify(kafkaTemplate, times(1)).send("event-outcomes", outcome);
-        assert response.equals("Event outcome published to Kafka");
+        verify(kafkaTemplate, times(1)).send(anyString(), eq(outcome));
+        assert response.getStatusCode().is2xxSuccessful();
+        assert Objects.equals(response.getBody(), Map.of("message", "Event outcome published to Kafka"));
     }
 }
