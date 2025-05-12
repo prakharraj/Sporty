@@ -1,12 +1,16 @@
 package com.sporty.kafka;
 
+import lombok.extern.log4j.Log4j2;
 import org.apache.kafka.clients.admin.AdminClient;
 import org.apache.kafka.clients.admin.AdminClientConfig;
 import org.apache.kafka.clients.admin.NewTopic;
+import org.springframework.context.annotation.Configuration;
 
 import java.util.Collections;
 import java.util.Properties;
 
+@Configuration
+@Log4j2
 public class KafkaTopicCreator {
     public static void main(String[] args) {
         // Kafka broker address
@@ -27,9 +31,9 @@ public class KafkaTopicCreator {
 
             // Create topic
             admin.createTopics(Collections.singleton(newTopic)).all().get();
-            System.out.println("Topic created: " + topicName);
+            log.info("Topic created: {}", topicName);
         } catch (Exception e) {
-            e.printStackTrace();
+            log.error("Error creating topic: {}", e.getMessage());
         }
     }
 }

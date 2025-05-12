@@ -1,5 +1,6 @@
 package com.sporty.config;
 
+import lombok.extern.log4j.Log4j2;
 import org.apache.kafka.clients.admin.AdminClient;
 import org.apache.kafka.clients.admin.AdminClientConfig;
 import org.apache.kafka.clients.admin.NewTopic;
@@ -11,6 +12,7 @@ import java.util.Collections;
 import java.util.Properties;
 
 @Configuration
+@Log4j2
 public class KafkaTopicCreator {
 
     private static final String TOPIC_NAME = "event-outcomes";
@@ -27,7 +29,7 @@ public class KafkaTopicCreator {
                 // Create topic if not exists
                 admin.createTopics(Collections.singleton(topic)).all().get();
 
-                System.out.println("✅ Kafka topic created: " + TOPIC_NAME);
+                log.info("✅ Kafka topic created: {}" , TOPIC_NAME);
             } catch (Exception e) {
                 System.err.println("⚠️ Failed to create Kafka topic: " + e.getMessage());
             }

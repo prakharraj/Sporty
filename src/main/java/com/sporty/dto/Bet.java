@@ -14,6 +14,7 @@ import java.math.BigDecimal;
 @Getter
 @NoArgsConstructor
 @Builder
+@ToString
 public class Bet {
 
     @Id
